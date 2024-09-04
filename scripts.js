@@ -1,3 +1,13 @@
+const buttons = document.querySelectorAll("button");
+const results = document.querySelector("#results");
+let playerScore = 0;
+let computerScore = 0;
+
+buttons.forEach((button) => {
+  button.addEventListener("click", () => 
+    playRound(button.id, getComputerChoice(), playerScore, computerScore))
+})
+
 function getComputerChoice() {
   const computer_choice = [
     "rock",
@@ -46,22 +56,35 @@ function playRound(playerSelection, computerSelection) {
     };
   };
 
+  const roundResult = document.createElement("p");
+  const scoreboard = document.createElement("p");
   if (outcome == 'won') {
-    console.log(`You ${outcome}! ${playerSelection} beats ${computerSelection}!`)
+    roundResult.textContent = 
+    `You ${outcome}! ${playerSelection} beats ${computerSelection}!`;
+    playerScore++;
   }
   else if (outcome == 'lost') {
-    console.log(`You ${outcome}! ${playerSelection} is beaten by ${computerSelection}!`)
+    roundResult.textContent = 
+    `You ${outcome}! ${playerSelection} is beaten by ${computerSelection}!`;
+    computerScore++;
   }
   else if (outcome == 'tied') {
-    console.log(`You ${outcome}! ${playerSelection} is even with ${computerSelection}!`)
+    roundResult.textContent = 
+    `You ${outcome}! ${playerSelection} is even with ${computerSelection}!`;
   }
-  else {console.log('error code 1')};
+  else {roundResult.textContent = 'error code 1'};
+
+  results.appendChild(roundResult);
+  scoreboard.textContent = 
+  `Player: ${playerScore} | Computer: ${computerScore} out of 5`;
+  results.appendChild(scoreboard);
+  
+  const finalResult = document.createElement("p");
+  if (playerScore == 5) {
+    finalResult.textContent = "Player won!";
+  } else if (computerScore == 5) {
+    finalResult.textContent = "Computer won!";
+  }
+  results.appendChild(finalResult);
   return
-}
-
-for (let i = 0; i < 5; i++) {
-  let playerSelection = prompt('Please select rock, paper, scissors: ').toLowerCase();
-  let computerSelection = getComputerChoice();
-
-  playRound(playerSelection, computerSelection);
 }
